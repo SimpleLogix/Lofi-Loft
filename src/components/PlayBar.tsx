@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import playAudio from "../util/MediaPlayer";
 
 type Props = {};
 
@@ -6,7 +7,12 @@ export default function PlayBar({}: Props) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const handlePlayClick = (event: React.MouseEvent<HTMLElement>) => {
-    setIsPlaying(!isPlaying);
+    if (isPlaying) {
+      setIsPlaying(false);
+    } else {
+      setIsPlaying(true);
+      playAudio();
+    }
   };
   const handleMutedClick = (event: React.MouseEvent<HTMLElement>) => {
     setIsMuted(!isMuted);

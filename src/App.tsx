@@ -13,6 +13,7 @@ function App() {
       }
     }
   }
+  console.log("first")
   return (
     <div className="background">
       <div>

@@ -1,0 +1,30 @@
+.actions-bar {
+    width: 50px;
+    min-height: 50px;
+    margin: 16px;
+    gap: 10px;
+    transition: min-height .3s ease-in;
+}
+
+.actions-bar>i,
+.actions-bar>div>i {
+    font-size: 24px;
+    color: var(--black);
+    padding: 12px;
+}
+
+.actions-bar>div {
+    gap: 12px;
+}
+
+.open {
+    min-height: 64vh;
+}
+
+.dark-mode:hover {
+    color: #f7b731;
+}
+
+.light-mode:hover {
+    color: #4b6584;
+}
