@@ -1,48 +1,65 @@
 import { Track, loadTracks } from "./Track";
 
-const TRACKS = [
-    "empty-minds.mp3",
-]
+
 
 class MediaPlayer {
 
     playlist: Track[] = [];
-    currentTrack: Track;
+    currentTrackIdx = 0;
 
     constructor() {
-        for (const trackName of TRACKS) {
-            this.playlist.push({
-                name: trackName,
-                artist: "Unknown",
-                audio: new Audio(`/tracks/${trackName}`)
-            })
-        }
-        this.currentTrack = this.playlist[0];
+        // load in audio
+        this.playlist = loadTracks();
     }
 
     play() {
-        console.log("playing")
-        this.currentTrack.audio.play();
+        this.playlist[this.currentTrackIdx].audio.play();
     }
 
     pause() {
-        console.log("pausing")
+        this.playlist[this.currentTrackIdx].audio.pause();
+        console.log(this.playlist[this.currentTrackIdx].audio.currentTime)
     }
 
     next() {
         console.log("next")
+        this.reset()
+        if (this.currentTrackIdx < this.playlist.length - 1) {
+            this.currentTrackIdx++;
+        } else {
+            this.currentTrackIdx = 0; // loop
+        }
+        this.play();
     }
 
     prev() {
         console.log("prev")
+        if (this.playlist[this.currentTrackIdx].audio.currentTime > 5) {
+            this.playlist[this.currentTrackIdx].audio.currentTime = 0; // restart
+        }
+        else {
+            this.reset()
+            if (this.currentTrackIdx > 0) {
+                this.currentTrackIdx--;
+            } else {
+                this.currentTrackIdx = this.playlist.length - 1; // loop
+            }
+            this.play();
+        }
+    }
+
+    mute() {
+        this.playlist.forEach(track => track.audio.muted = true);
+    }
+
+    unmute() {
+        this.playlist.forEach(track => track.audio.muted = false);
+    }
+
+    private reset() {
+        this.playlist[this.currentTrackIdx].audio.pause();
+        this.playlist[this.currentTrackIdx].audio.currentTime = 0;
     }
 }
 
-
-const playAudio = () => {
-    console.log("playing")
-    let audio = new Audio(`/tracks/empty-minds.mp3`);
-    audio.play();
-}
-
-export default playAudio;;
+export default MediaPlayer;

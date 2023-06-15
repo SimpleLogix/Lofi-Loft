@@ -4,6 +4,7 @@ import PlayBar from "./components/PlayBar";
 import ActionsBar from "./components/ActionsBar";
 
 function App() {
+  // enables fullscreen or exits fullscreen if already in
   function fullscreenClick(event: React.MouseEvent<HTMLElement>) {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen();
@@ -13,7 +14,6 @@ function App() {
       }
     }
   }
-  console.log("first")
   return (
     <div className="background">
       <div>
