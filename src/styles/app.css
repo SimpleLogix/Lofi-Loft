@@ -28,7 +28,8 @@ i {
 }
 
 .background {
-    background: url("../assets/images/snow.jpg");
+    background: url("../assets/images/synthwave.gif");
+    background-position: 50%;
     background-size: cover;
     background-repeat: no-repeat;
     height: 100vh;

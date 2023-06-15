@@ -47,10 +47,15 @@ export default function ActionsBar({}: Props) {
           >
             {isLightMode ? "dark_mode" : "light_mode"}
           </i>
+          <i className="material-symbols-outlined">forest</i>
+          <i className="material-symbols-outlined">rainy</i>
+          <i className="material-symbols-outlined">bolt</i>
+          <i className="material-symbols-outlined">train</i>
         </div>
       ) : (
         <i className="hidden"></i>
       )}
+      
     </div>
   );
 }

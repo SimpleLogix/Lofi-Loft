@@ -1,24 +1,44 @@
 .actions-bar {
     width: 50px;
-    min-height: 50px;
-    margin: 16px;
+    height: 50px;
+    margin: 22px;
     gap: 10px;
-    transition: min-height .3s ease-in;
+    transition: height .3s ease-in;
 }
 
 .actions-bar>i,
 .actions-bar>div>i {
-    font-size: 24px;
+    font-size: 28px;
     color: var(--black);
     padding: 12px;
+}
+
+.actions-bar>div>i {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0
+    }
+
+    100% {
+        opacity: 1
+    }
 }
 
 .actions-bar>div {
     gap: 12px;
 }
 
+.actions-bar>div>i:hover {
+    background-color: var(--white);
+    box-shadow: 0 0 50px 12px var(--white);
+    border-radius: 50%;
+}
+
 .open {
-    min-height: 64vh;
+    height: 500px;
 }
 
 .dark-mode:hover {
