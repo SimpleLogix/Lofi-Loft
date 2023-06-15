@@ -3,17 +3,17 @@ Lofi streaming web app
 
 ### UI
 
-- Lofi image as background
+- ✅ Lofi image as background
 - Day/Night Toggle
 - Time
 - Music Control
-  - Play/pause
-  - Skip/rewind
-  - Mute/Mute All
+  - ✅ Play/pause
+  - ✅ Skip/rewind
+  - ✅ Mute/Mute All
   - Mixer (sound control)
-- Full screen
+- ✅ Full screen
 - Scenes
-- Hamburger
+- ✅ Hamburger
   - Ambient sounds
   - Rain
   - Thunder

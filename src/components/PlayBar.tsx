@@ -8,6 +8,7 @@ export default function PlayBar({}: Props) {
   const mediaPlayer = useRef(new MediaPlayer()).current;
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+  
   // state handlers
   const handlePlayClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isPlaying) {
