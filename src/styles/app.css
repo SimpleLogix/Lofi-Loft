@@ -46,14 +46,17 @@ i {
     align-items: flex-start;
 }
 
-.bar {
-    display: flex;
-    align-items: center;
+.frosty{
     background: rgba(47, 42, 42, 0.57);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(7.9px);
     -webkit-backdrop-filter: blur(7.9px);
     border: 1px solid rgba(47, 42, 42, 0.24);
+}
+
+.bar {
+    display: flex;
+    align-items: center;
 }
 
 .fullscreen-icon {

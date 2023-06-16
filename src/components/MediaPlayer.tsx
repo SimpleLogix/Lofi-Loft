@@ -13,7 +13,7 @@ export default function MediaPlayer({}: Props) {
   const [isPlaying, setIsPlaying] = useState(false);
 
   // state handlers
-  const handlePlayClick = (event: React.MouseEvent<HTMLElement>) => {
+  const handlePausePlayClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isPlaying) {
       mediaPlayer.pause();
     } else {
@@ -22,18 +22,18 @@ export default function MediaPlayer({}: Props) {
     setIsPlaying(!isPlaying);
   };
 
-  const secondsToString = (seconds: number): string => {
-    if (isNaN(seconds)) return "0:00";
-    const roundedSec = Math.round(seconds);
-    const min = Math.floor(roundedSec / 60);
-    const sec = roundedSec % 60;
-    return `${min}:${sec < 10 ? "0" + sec : sec}`;
+  const handleRewindClick = (event: React.MouseEvent<HTMLElement>) => {
+    const res = mediaPlayer.prev();
+    if (res === 0) {
+      mediaPlayer.play();
+      setCurrentTrack(mediaPlayer.currentTrack);
+      setIsPlaying(true);
+    }
   };
-
-  // returns the off set of the track duration
-  // used in the track bar to position the little cirlce
-  const getPercentageTrackDone = (): string => {
-    return `calc(-6px + ${Math.round((currentTime / duration) * 100)}%)`;
+  const handleForwardClick = (event: React.MouseEvent<HTMLElement>) => {
+    mediaPlayer.next();
+    setCurrentTrack(mediaPlayer.currentTrack);
+    setIsPlaying(true);
   };
 
   // update duration and add event listener to audio on load
@@ -61,12 +61,12 @@ export default function MediaPlayer({}: Props) {
   }, [currentTrack]);
 
   return (
-    <div className="center column mp-container bar">
-      {/* << */}
+    <div className="center column mp-container frosty bar">
+
       <div className="track-bar">
         <div
           className="track-pos-ball"
-          style={{ left: getPercentageTrackDone() }}
+          style={{ left: getPercentageTrackDone(currentTime, duration) }}
         ></div>
         <div className="track-time">
           <div>{secondsToString(currentTime)}</div>
@@ -76,40 +76,37 @@ export default function MediaPlayer({}: Props) {
       </div>
 
       <div className="center controls">
-        <i
-          onClick={() => {
-            const res = mediaPlayer.prev();
-            if (res === 0) {
-              mediaPlayer.play();
-              setCurrentTrack(mediaPlayer.currentTrack);
-              setIsPlaying(true);
-            }
-          }}
-          className="material-icons"
-        >
+        <i onClick={handleRewindClick} className="material-icons">
           fast_rewind
         </i>
-
         {/* Play/Pause */}
         <i
-          onClick={handlePlayClick}
+          onClick={handlePausePlayClick}
           className="material-symbols-outlined play-pause"
         >
           {isPlaying ? "pause_circle" : "play_circle"}
         </i>
-
-        {/* >> */}
-        <i
-          onClick={() => {
-            mediaPlayer.next();
-            setCurrentTrack(mediaPlayer.currentTrack);
-            setIsPlaying(true);
-          }}
-          className="material-icons"
-        >
+        <i onClick={handleForwardClick} className="material-icons">
           fast_forward
         </i>
       </div>
+
     </div>
   );
 }
+
+// helpers
+
+const secondsToString = (seconds: number): string => {
+  if (isNaN(seconds)) return "0:00";
+  const roundedSec = Math.round(seconds);
+  const min = Math.floor(roundedSec / 60);
+  const sec = roundedSec % 60;
+  return `${min}:${sec < 10 ? "0" + sec : sec}`;
+};
+
+// returns the off set of the track duration
+// used in the track bar to position the little cirlce
+const getPercentageTrackDone = (current: number, duration: number): string => {
+  return `calc(-6px + ${Math.round((current / duration) * 100)}%)`;
+};

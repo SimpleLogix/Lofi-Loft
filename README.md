@@ -29,3 +29,10 @@ Lofi streaming web app
 - Set up rules
 - Download client side
 - Save to storage?
+
+
+animation ideas:
+audio signals over mp
+tooltips over mouse
+
+!!! look into using MUI
