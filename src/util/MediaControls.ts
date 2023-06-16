@@ -2,14 +2,16 @@ import { Track, loadTracks } from "./Track";
 
 
 
-class MediaPlayer {
+class MediaControls {
 
     playlist: Track[] = [];
+    currentTrack: Track;
     currentTrackIdx = 0;
 
     constructor() {
         // load in audio
         this.playlist = loadTracks();
+        this.currentTrack = this.playlist[0];
     }
 
     play() {
@@ -18,22 +20,20 @@ class MediaPlayer {
 
     pause() {
         this.playlist[this.currentTrackIdx].audio.pause();
-        console.log(this.playlist[this.currentTrackIdx].audio.currentTime)
     }
 
     next() {
-        console.log("next")
         this.reset()
         if (this.currentTrackIdx < this.playlist.length - 1) {
             this.currentTrackIdx++;
         } else {
             this.currentTrackIdx = 0; // loop
         }
+        this.currentTrack = this.playlist[this.currentTrackIdx];
         this.play();
     }
 
     prev() {
-        console.log("prev")
         if (this.playlist[this.currentTrackIdx].audio.currentTime > 5) {
             this.playlist[this.currentTrackIdx].audio.currentTime = 0; // restart
         }
@@ -44,17 +44,26 @@ class MediaPlayer {
             } else {
                 this.currentTrackIdx = this.playlist.length - 1; // loop
             }
-            this.play();
+            this.currentTrack = this.playlist[this.currentTrackIdx];
+            return 0;
         }
     }
 
-    mute() {
-        this.playlist.forEach(track => track.audio.muted = true);
+    currentTime(): string {
+        const time = Math.round(this.playlist[this.currentTrackIdx].audio.currentTime)
+        const min = Math.round(time / 60);
+        const sec = time % 60;
+
+        return `${min}:${sec < 10 ? '0' + sec : sec}`;
     }
 
-    unmute() {
-        this.playlist.forEach(track => track.audio.muted = false);
-    }
+    // mute() {
+    //     this.playlist.forEach(track => track.audio.muted = true);
+    // }
+
+    // unmute() {
+    //     this.playlist.forEach(track => track.audio.muted = false);
+    // }
 
     private reset() {
         this.playlist[this.currentTrackIdx].audio.pause();
@@ -62,4 +71,4 @@ class MediaPlayer {
     }
 }
 
-export default MediaPlayer;
+export default MediaControls;

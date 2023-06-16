@@ -36,7 +36,7 @@ export default function ActionsBar({}: Props) {
         menu
       </i>
       {isOpen ? (
-        <div className="center column">
+        <div className="center">
           <i className="material-icons">tune</i>
           <i className="material-icons">wallpaper</i>
           <i

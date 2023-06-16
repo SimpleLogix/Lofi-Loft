@@ -1,0 +1,75 @@
+.mp-container {
+    position: absolute;
+    bottom: 3%;
+    right: 3%;
+    width: 320px;
+    max-width: 90%;
+    border-radius: 12px;
+    height: 150px;
+    justify-content: space-evenly;
+}
+
+.mp-container>i {
+    font-size: 23px;
+}
+
+.mp-container>i:hover {
+    font-size: 24px;
+    padding: 3px;
+}
+
+.track-metadata {
+    position: absolute;
+    letter-spacing: 0.3px;
+    color: var(--white);
+    font-size: 14px;
+    font-weight: 600;
+    top: 18px;
+    width: 100%;
+    opacity: 0.8;
+}
+
+.track-time {
+    opacity: 0.6;
+}
+
+.track-bar {
+    position: relative;
+    width: 80%;
+    height: 2px;
+    background-color: rgba(209, 216, 224, 0.2);
+}
+
+.track-pos-ball {
+    position: absolute;
+    top: -5px;
+    left: calc(-6px);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--white);
+    opacity: 0.8;
+}
+
+.track-pos-ball:hover {
+    cursor: pointer;
+}
+
+.controls {
+    width: 100%;
+    gap: 14px;
+    padding-top: 14px;
+}
+
+
+.play-pause {
+    font-size: 48px;
+}
+
+.track-bar>div:nth-child(2) {
+    font-size: 13px;
+    padding-top: 6px;
+    display: flex;
+    justify-content: space-between;
+}
+

@@ -1,6 +1,6 @@
 import React from "react";
 import "./styles/app.css";
-import PlayBar from "./components/PlayBar";
+import MediaPlayer from "./components/MediaPlayer";
 import ActionsBar from "./components/ActionsBar";
 
 function App() {
@@ -16,14 +16,13 @@ function App() {
   }
   return (
     <div className="background">
-      <div>
+      <div> 
         <ActionsBar></ActionsBar>
-        <PlayBar></PlayBar>
         <i className="material-icons fullscreen-icon" onClick={fullscreenClick}>
           fullscreen
         </i>
       </div>
-      <div className="logo"></div>
+      <MediaPlayer></MediaPlayer>
     </div>
   );
 }
