@@ -17,6 +17,7 @@ export default function ActionsBar({ mediaControls }: Props) {
   const [isMixerHover, setIsMixerHover] = useState(false);
   const [isScenesHover, setIsScenesHover] = useState(false);
   let timer: NodeJS.Timeout;
+  let timer2: NodeJS.Timeout;
 
   // load volume statet values from local storage
   const [ambienceVolume, setAmbienceVolume] = useState(
@@ -109,12 +110,12 @@ export default function ActionsBar({ mediaControls }: Props) {
     setIsMixerHover(false);
   };
   const handleScenesMouseEnter = () => {
-    timer = setTimeout(() => {
+    timer2 = setTimeout(() => {
       setIsScenesHover(true);
     }, 700);
   };
   const handleScenesMouseExit = () => {
-    clearTimeout(timer);
+    clearTimeout(timer2);
     setIsScenesHover(false);
   };
 
