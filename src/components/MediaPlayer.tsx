@@ -61,17 +61,34 @@ export default function MediaPlayer({ mediaControls }: Props) {
     };
   }, [currentTrack]);
 
+  // pause  state when audio is paused
   useEffect(() => {
     setIsPlaying(!mediaControls.currentTrack.audio.paused);
   }, [mediaControls.currentTrack.audio.paused]);
 
+  useEffect(() => {
+    mediaControls.currentTrack.audio.onended = () => mediaControls.next();
+    setCurrentTrack(mediaControls.currentTrack);
+  }, [mediaControls.currentTrack.audio]);
+
+  const handleTrackPositionUpdate = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setCurrentTime(Number(event.target.value));
+    mediaControls.currentTrack.audio.currentTime = Number(event.target.value);
+  };
+
   return (
     <div className="center column mp-container frosty bar">
       <div className="track-bar">
-        <div
-          className="track-pos-ball"
-          style={{ left: getPercentageTrackDone(currentTime, duration) }}
-        ></div>
+        <input
+          type="range"
+          id="track-slider"
+          value={mediaControls.currentTrack.audio.currentTime}
+          min={0}
+          max={mediaControls.currentTrack.audio.duration}
+          onChange={handleTrackPositionUpdate}
+        />
         <div className="track-time">
           <div>{secondsToString(currentTime)}</div>
           <div>

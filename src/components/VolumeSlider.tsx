@@ -104,7 +104,7 @@ const VolumeSlider = ({
       </i>
       <input
         className={`${
-          isMixerOpen || isHover ? "fadeIn frosty mixer-slider" : "hidden"
+          isMixerOpen || isHover ? "fadeIn frosty" : "hidden"
         }`}
         type="range"
         min={0}
