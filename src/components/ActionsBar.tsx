@@ -14,6 +14,9 @@ export default function ActionsBar({ mediaControls }: Props) {
   const [isLightMode, setIsLightMode] = useState(true);
   const [isScenesOpen, setIsScenesOpen] = useState(false);
   const [isMixerOpen, setIsMixerOpen] = useState(false);
+  const [isMixerHover, setIsMixerHover] = useState(false);
+  const [isScenesHover, setIsScenesHover] = useState(false);
+  let timer: NodeJS.Timeout;
 
   // load volume statet values from local storage
   const [ambienceVolume, setAmbienceVolume] = useState(
@@ -95,6 +98,26 @@ export default function ActionsBar({ mediaControls }: Props) {
     setMusicVolume(number);
   };
 
+  // show slider when hovering over icon
+  const handleMixerMouseEnter = () => {
+    timer = setTimeout(() => {
+      setIsMixerHover(true);
+    }, 700);
+  };
+  const handleMixerMouseExit = () => {
+    clearTimeout(timer);
+    setIsMixerHover(false);
+  };
+  const handleScenesMouseEnter = () => {
+    timer = setTimeout(() => {
+      setIsScenesHover(true);
+    }, 700);
+  };
+  const handleScenesMouseExit = () => {
+    clearTimeout(timer);
+    setIsScenesHover(false);
+  };
+
   return (
     <div className="actions-holder">
       <div
@@ -105,17 +128,47 @@ export default function ActionsBar({ mediaControls }: Props) {
         </i>
         {isMenuOpen ? (
           <div className="icons-column">
-            <i className="material-icons" onClick={handleMixerClick}>
-              tune
-            </i>
+            {/* Mixer */}
+            <div className="icon-holder">
+              <i
+                onMouseEnter={handleMixerMouseEnter}
+                onMouseLeave={handleMixerMouseExit}
+                className="material-icons"
+                onClick={handleMixerClick}
+              >
+                tune
+              </i>
+              <div
+                className={`${
+                  isMixerHover ? " center frosty tooltip" : "hidden"
+                }`}
+              >
+                Audio Mixer
+              </div>
+            </div>
 
-            <i
-              className={`material-icons ${isScenesOpen ? "selected" : ""}`}
-              onClick={handleScenesClick}
-            >
-              wallpaper
-            </i>
+            {/* Scenes */}
+            <div className="icon-holder">
+              <i
+                onMouseEnter={handleScenesMouseEnter}
+                onMouseLeave={handleScenesMouseExit}
+                className={`material-icons ${isScenesHover ? "" : ""} ${
+                  isScenesOpen ? "selected" : ""
+                }`}
+                onClick={handleScenesClick}
+              >
+                wallpaper
+              </i>
+              <div
+                className={`${
+                  isScenesHover ? "center frosty tooltip" : "hidden"
+                }`}
+              >
+                Scenes
+              </div>
+            </div>
 
+            {/* Light/Dark mode toggle */}
             <i
               onClick={handleDarkLightModeToggle}
               className={`material-symbols-outlined ${

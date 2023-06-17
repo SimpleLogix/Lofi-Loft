@@ -80,6 +80,10 @@
         flex-direction: row;
         flex-wrap: wrap;
     }
+
+    .tooltip{
+        margin-left: 112px;
+    }
 }
 
 .actions-holder {
@@ -153,4 +157,16 @@ input[type=range]::-moz-range-progress {
 
 .inactive-icon {
     opacity: 0.6;
+}
+
+.icon-holder {
+    display: flex;
+    align-items: center;
+    width: 150px;
+}
+
+.icon-holder>div {
+    font-size: 12px;
+    height: 20px;
+
 }

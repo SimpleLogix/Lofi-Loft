@@ -2,20 +2,29 @@
     position: absolute;
     bottom: 3%;
     right: 3%;
-    width: 320px;
+    width: 350px;
     max-width: 90%;
     border-radius: 12px;
-    height: 150px;
+    height: 170px;
     justify-content: space-evenly;
 }
 
-.mp-container>i {
+.mp-container>div>i {
     font-size: 23px;
 }
 
-.mp-container>i:hover {
+.mp-container>div>i:nth-child(2) {
+    font-size: 48px;
+}
+
+.mp-container>div>i:nth-child(2):hover {
+    font-size: 49px;
+    padding: 0 3px;
+}
+
+.mp-container>div>i:hover {
     font-size: 24px;
-    padding: 3px;
+    padding: 0 3px;
 }
 
 .track-metadata {
@@ -58,9 +67,8 @@
 .controls {
     width: 100%;
     gap: 14px;
-    padding-top: 14px;
+    padding-top: 34px;
 }
-
 
 .play-pause {
     font-size: 48px;
