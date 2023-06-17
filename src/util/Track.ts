@@ -4,7 +4,7 @@ export interface Track {
 }
 
 const TRACKS = [
-    "empty-minds", "watr-fluid"
+    "empty-minds", "coffee-chill-out"
 ]
 
 // loads tracks from public into HTMLAudioElement
@@ -13,7 +13,7 @@ export const loadTracks = () => {
     for (const trackName of TRACKS) {
         playlist.push({
             name: trackName,
-            audio: new Audio(`/tracks/${trackName}.mp3`)
+            audio: new Audio(`/audio/tracks/${trackName}.mp3`)
         })
     }
 

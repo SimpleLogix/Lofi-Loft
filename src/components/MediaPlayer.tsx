@@ -2,12 +2,13 @@ import React, { useState, useRef, useEffect } from "react";
 import MediaControls from "../util/MediaControls";
 import "../styles/mediaplayer.css";
 
-type Props = {};
+type Props = {
+  mediaControls: MediaControls;
+};
 
-export default function MediaPlayer({}: Props) {
+export default function MediaPlayer({ mediaControls }: Props) {
   // states
-  const mediaPlayer = useRef(new MediaControls()).current;
-  const [currentTrack, setCurrentTrack] = useState(mediaPlayer.currentTrack);
+  const [currentTrack, setCurrentTrack] = useState(mediaControls.currentTrack);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -15,24 +16,24 @@ export default function MediaPlayer({}: Props) {
   // state handlers
   const handlePausePlayClick = (event: React.MouseEvent<HTMLElement>) => {
     if (isPlaying) {
-      mediaPlayer.pause();
+      mediaControls.pause();
     } else {
-      mediaPlayer.play();
+      mediaControls.play();
     }
     setIsPlaying(!isPlaying);
   };
 
   const handleRewindClick = (event: React.MouseEvent<HTMLElement>) => {
-    const res = mediaPlayer.prev();
+    const res = mediaControls.prev();
     if (res === 0) {
-      mediaPlayer.play();
-      setCurrentTrack(mediaPlayer.currentTrack);
+      mediaControls.play();
+      setCurrentTrack(mediaControls.currentTrack);
       setIsPlaying(true);
     }
   };
   const handleForwardClick = (event: React.MouseEvent<HTMLElement>) => {
-    mediaPlayer.next();
-    setCurrentTrack(mediaPlayer.currentTrack);
+    mediaControls.next();
+    setCurrentTrack(mediaControls.currentTrack);
     setIsPlaying(true);
   };
 
@@ -60,9 +61,12 @@ export default function MediaPlayer({}: Props) {
     };
   }, [currentTrack]);
 
+  useEffect(() => {
+    setIsPlaying(!mediaControls.currentTrack.audio.paused);
+  }, [mediaControls.currentTrack.audio.paused]);
+
   return (
     <div className="center column mp-container frosty bar">
-
       <div className="track-bar">
         <div
           className="track-pos-ball"
@@ -70,7 +74,9 @@ export default function MediaPlayer({}: Props) {
         ></div>
         <div className="track-time">
           <div>{secondsToString(currentTime)}</div>
-          <div>{secondsToString(mediaPlayer.currentTrack.audio.duration)}</div>
+          <div>
+            {secondsToString(mediaControls.currentTrack.audio.duration)}
+          </div>
         </div>
         <div className="track-metadata">{currentTrack.name}</div>
       </div>
@@ -90,7 +96,6 @@ export default function MediaPlayer({}: Props) {
           fast_forward
         </i>
       </div>
-
     </div>
   );
 }

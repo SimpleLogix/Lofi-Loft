@@ -1,5 +1,7 @@
-# Lofi-Loft
-Lofi streaming web app
+# Lofi Loft
+[Lofi streaming web app](https://lofi-loft.web.app/)
+
+
 
 ### UI
 
@@ -31,8 +33,9 @@ Lofi streaming web app
 - Save to storage?
 
 
-animation ideas:
-audio signals over mp
-tooltips over mouse
-
-!!! look into using MUI
+###**TODO:**
+- [ ] Slider function
+- [ ] Tooltips
+- [ ] Audio signal over MP
+- [ ] Scenes menu
+- [ ] track name move

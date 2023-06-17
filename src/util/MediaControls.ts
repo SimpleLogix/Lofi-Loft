@@ -7,6 +7,7 @@ class MediaControls {
     playlist: Track[] = [];
     currentTrack: Track;
     currentTrackIdx = 0;
+    volume = 50;
 
     constructor() {
         // load in audio
@@ -15,6 +16,7 @@ class MediaControls {
     }
 
     play() {
+        this.playlist[this.currentTrackIdx].audio.volume = this.volume / 100;
         this.playlist[this.currentTrackIdx].audio.play();
     }
 
@@ -48,6 +50,11 @@ class MediaControls {
             return 0;
         }
     }
+
+    setVolume(volume: number) {
+        this.volume = volume;
+    }
+
 
     currentTime(): string {
         const time = Math.round(this.playlist[this.currentTrackIdx].audio.currentTime)

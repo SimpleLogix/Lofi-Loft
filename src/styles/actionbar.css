@@ -29,6 +29,10 @@
     }
 }
 
+.fadeIn {
+    animation: fadeIn 0.25s ease-out;
+}
+
 .actions-bar>div {
     flex-direction: column;
     gap: 12px;
@@ -53,7 +57,14 @@
     color: #4b6584;
 }
 
-@media only screen and (max-height: 700px) and (max-width: 500px) {
+.icons-column {
+    display: flex;
+    align-self: flex-start;
+    align-items: flex-start;
+}
+
+@media only screen and (max-height: 600px),
+(max-width: 500px) {
     .actions-bar {
         width: 150px;
     }
@@ -85,20 +96,73 @@
 
 .slider-parent {
     position: relative;
-    justify-content: flex-start;
+    display: flex;
 }
 
-.mixer-slider {
-    position: absolute;
-    width: 150px;
-    height: 25px;
-    margin-left: 100%;
-    border: none;
-    animation: fadeIn 0.25s ease-out;
-    border-top-right-radius: 12px;
-    border-bottom-right-radius: 12px;
-    padding: 1%;
+.slider {}
+
+.range {
+    display: flex;
+    align-items: center;
+    max-width: 500px;
+    height: 4rem;
+    width: 80%;
+    background: #fff;
+    padding: 0px 10px;
 }
+
+input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 150px;
+    height: 10px;
+    border-radius: 12px;
+    outline: none;
+    cursor: pointer;
+    /* Transition for smooth sliding effect */
+    transition: .2s;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    /* Necessary for Chrome/Safari */
+    appearance: none;
+    /* Necessary for Chrome/Safari */
+    width: 20px;
+    height: 20px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+input[type=range]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--black);
+    border: 2px solid var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+input[type=range]::-ms-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--accent);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    background: var(--accent);
+}
+
+input[type=range]::-moz-range-progress {
+    background: var(--accent);
+    height: 10px;
+    border-radius: 12px;
+    margin: 1px;
+}
+
 
 .mixer-slider-bar {
     position: relative;
@@ -121,4 +185,8 @@
 
 .mixer-slider-ball:hover {
     cursor: pointer;
+}
+
+.inactive-icon {
+    opacity: 0.6;
 }

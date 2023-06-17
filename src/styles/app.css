@@ -1,6 +1,7 @@
 :root {
     --white: #d1d8e0;
     --black: #32393d;
+    --accent: #d1d8e0;
     color: #d1d8e0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -36,7 +37,7 @@ i {
     width: 100vw;
 }
 
-.background>div{
+.background>div {
     display: flex;
     flex: 1;
 }
@@ -46,7 +47,7 @@ i {
     align-items: flex-start;
 }
 
-.frosty{
+.frosty {
     background: rgba(47, 42, 42, 0.57);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(7.9px);
@@ -68,4 +69,20 @@ i {
 
 .hidden {
     display: none;
+}
+
+.logo {
+    position: absolute;
+    bottom: 0;
+    margin: 24px;
+    font-family: 'gotu', 'seoge Ui';
+    font-size: 64px;
+    font-style: italic;
+}
+
+.tooltip {
+    position: relative;
+    padding: 4px 8px;
+    border-radius: 8px;
+    margin-left: 12px;
 }
