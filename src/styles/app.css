@@ -1,7 +1,7 @@
 :root {
     --white: #d1d8e0;
     --black: #32393d;
-    --accent: #d1d8e0;
+    --accent: rgba(209, 216, 224, 0.5);
     color: #d1d8e0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

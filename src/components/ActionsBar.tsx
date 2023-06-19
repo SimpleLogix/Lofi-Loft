@@ -46,6 +46,13 @@ export default function ActionsBar({ mediaControls }: Props) {
       : 80
   );
 
+  // load selected scene
+  const [scene, setScene] = useState(
+    localStorage.getItem("scene") !== null
+      ? localStorage.getItem("scene")!
+      : "room.jpg"
+  );
+
   // close Action bar on resize < 500 vh
   useEffect(() => {
     function handleResize() {
@@ -224,7 +231,7 @@ export default function ActionsBar({ mediaControls }: Props) {
           <i className="hidden"></i>
         )}
       </div>
-      <Scenes isOpen={isScenesOpen}></Scenes>
+      <Scenes isOpen={isScenesOpen} scene={scene} />
     </div>
   );
 }
