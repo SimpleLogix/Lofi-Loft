@@ -1,17 +1,19 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import MediaControls from "../util/MediaControls";
 import "../styles/mediaplayer.css";
 
 type Props = {
   mediaControls: MediaControls;
+  muteCallback: (isMuted: boolean) => void;
 };
 
-export default function MediaPlayer({ mediaControls }: Props) {
+export default function MediaPlayer({ mediaControls, muteCallback }: Props) {
   // states
   const [currentTrack, setCurrentTrack] = useState(mediaControls.currentTrack);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
 
   // state handlers
   const handlePausePlayClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -78,15 +80,39 @@ export default function MediaPlayer({ mediaControls }: Props) {
     mediaControls.currentTrack.audio.currentTime = Number(event.target.value);
   };
 
+  const handleMuteClick = (event: React.MouseEvent<HTMLElement>) => {
+    setIsMuted(!isMuted);
+    muteCallback(!isMuted)
+  };
+
+  // play / pause audio on space bar press
+  useEffect(() => {
+    const onSpacebarPress = (event: KeyboardEvent) => {
+      if (event.code === "Space") {
+        setIsPlaying(!isPlaying);
+        isPlaying ? mediaControls.pause() : mediaControls.play();
+      }
+    };
+    window.addEventListener("keydown", onSpacebarPress);
+
+    return () => {
+      window.removeEventListener("keydown", onSpacebarPress);
+    };
+  }, [isPlaying, mediaControls.currentTrack.audio]);
+
   return (
-    <div className="center column mp-container frosty bar">
+    <div
+      className="center column mp-container frosty bar"
+      onDoubleClick={(e) => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+    >
       <div className="track-bar">
         <input
           type="range"
           id="track-slider"
           value={mediaControls.currentTrack.audio.currentTime}
           min={0}
-          max={mediaControls.currentTrack.audio.duration}
+          max={mediaControls.currentTrack.audio.duration || 0}
           onChange={handleTrackPositionUpdate}
         />
         <div className="track-time">
@@ -99,9 +125,12 @@ export default function MediaPlayer({ mediaControls }: Props) {
       </div>
 
       <div className="center controls">
-        <i onClick={handleRewindClick} className="material-icons">
-          fast_rewind
-        </i>
+        <div>
+          <i onClick={handleRewindClick} className="material-icons">
+            fast_rewind
+          </i>
+        </div>
+
         {/* Play/Pause */}
         <i
           onClick={handlePausePlayClick}
@@ -109,9 +138,15 @@ export default function MediaPlayer({ mediaControls }: Props) {
         >
           {isPlaying ? "pause_circle" : "play_circle"}
         </i>
-        <i onClick={handleForwardClick} className="material-icons">
-          fast_forward
-        </i>
+        <div className="center">
+          <i onClick={handleForwardClick} className="material-icons">
+            fast_forward
+          </i>
+          <i onClick={handleMuteClick} className="material-icons">
+            {isMuted ? "volume_off" : "volume_up"}
+          </i>
+          <i></i>
+        </div>
       </div>
     </div>
   );

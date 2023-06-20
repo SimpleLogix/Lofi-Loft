@@ -2,6 +2,8 @@
     --white: #d1d8e0;
     --black: #32393d;
     --accent: rgba(209, 216, 224, 0.5);
+    --gold: #f9ca24;
+    --selected: #ffb142;
     color: #d1d8e0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -29,7 +31,6 @@ i {
 }
 
 .background {
-    background: url("../assets/images/room.jpg");
     background-position: 50%;
     background-size: cover;
     background-repeat: no-repeat;
@@ -78,6 +79,7 @@ i {
     font-family: 'gotu', 'seoge Ui';
     font-size: 64px;
     font-style: italic;
+    user-select: none;
 }
 
 .tooltip {

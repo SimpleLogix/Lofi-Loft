@@ -111,3 +111,16 @@
     background: var(--white);
     height: 2px;
 }
+
+.center.controls>i:first-child,
+.center.controls>div {
+    flex: 1;
+}
+
+.center.controls>div:first-child {
+    text-align: end;
+}
+
+.center.controls>div {
+    justify-content: space-between;
+}

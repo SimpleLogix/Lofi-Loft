@@ -13,20 +13,23 @@ const IMAGE_NAMES = [
 type Props = {
   isOpen: boolean;
   scene: string;
+  changeSceneCallback: (scene: string) => void;
 };
 
-const Scenes = ({ isOpen, scene }: Props) => {
+const Scenes = ({ isOpen, scene, changeSceneCallback }: Props) => {
   return (
     <div
-      className={`center column scenes-container frosty ${
-        isOpen ? "" : "hidden"
-      }}`}
+      className={`${
+        isOpen ? "center column scenes-container frosty" : "hidden"
+      } }`}
     >
       {IMAGE_NAMES.map((name) => (
         <img
+          key={name}
           src={`/images/${name}`}
           alt=""
-          className={`${scene === name ? "scenes-selected" : ""}`} //TODO- hide scenes menu / show selected / save selected
+          className={`${scene === name ? "selected-scene" : "hidden"}`}
+          onClick={() => changeSceneCallback(name)}
         />
       ))}
     </div>
