@@ -4,41 +4,24 @@ import "../styles/mediaplayer.css";
 
 type Props = {
   mediaControls: MediaControls;
+  musicVolume: number;
+  isMuted: boolean;
+  setIsMuted: (isMuted: boolean) => void;
   muteCallback: (isMuted: boolean) => void;
 };
 
-export default function MediaPlayer({ mediaControls, muteCallback }: Props) {
-  // states
-  const [currentTrack, setCurrentTrack] = useState(mediaControls.currentTrack);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
+const MediaPlayer = ({
+  mediaControls,
+  isMuted,
+  setIsMuted,
+  muteCallback,
+}: Props) => {
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [currentTrack, setCurrentTrack] = useState(mediaControls.currentTrack);
+  const [duration, setDuration] = useState(0); // displayed track duration
+  const [currentTime, setCurrentTime] = useState(0); // displayed current time
 
-  // state handlers
-  const handlePausePlayClick = (event: React.MouseEvent<HTMLElement>) => {
-    if (isPlaying) {
-      mediaControls.pause();
-    } else {
-      mediaControls.play();
-    }
-    setIsPlaying(!isPlaying);
-  };
-
-  const handleRewindClick = (event: React.MouseEvent<HTMLElement>) => {
-    const res = mediaControls.prev();
-    if (res === 0) {
-      mediaControls.play();
-      setCurrentTrack(mediaControls.currentTrack);
-      setIsPlaying(true);
-    }
-  };
-  const handleForwardClick = (event: React.MouseEvent<HTMLElement>) => {
-    mediaControls.next();
-    setCurrentTrack(mediaControls.currentTrack);
-    setIsPlaying(true);
-  };
-
+  //? useEffects
   // update duration and add event listener to audio on load
   useEffect(() => {
     // update current time state every time audio updates
@@ -68,10 +51,36 @@ export default function MediaPlayer({ mediaControls, muteCallback }: Props) {
     setIsPlaying(!mediaControls.currentTrack.audio.paused);
   }, [mediaControls.currentTrack.audio.paused]);
 
+  // play next audio when current audio ends
   useEffect(() => {
     mediaControls.currentTrack.audio.onended = () => mediaControls.next();
     setCurrentTrack(mediaControls.currentTrack);
-  }, [mediaControls.currentTrack.audio]);
+  }, [mediaControls.currentTrack.audio, mediaControls]);
+
+  //? state handlers
+  const handlePausePlayClick = (event: React.MouseEvent<HTMLElement>) => {
+    if (isPlaying) {
+      mediaControls.pause();
+    } else {
+      mediaControls.play();
+      setIsMuted(false);
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleRewindClick = (event: React.MouseEvent<HTMLElement>) => {
+    const res = mediaControls.prev();
+    if (res === 0) {
+      mediaControls.play();
+      setCurrentTrack(mediaControls.currentTrack);
+      setIsPlaying(true);
+    }
+  };
+  const handleForwardClick = (event: React.MouseEvent<HTMLElement>) => {
+    mediaControls.next();
+    setCurrentTrack(mediaControls.currentTrack);
+    setIsPlaying(true);
+  };
 
   const handleTrackPositionUpdate = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -82,23 +91,8 @@ export default function MediaPlayer({ mediaControls, muteCallback }: Props) {
 
   const handleMuteClick = (event: React.MouseEvent<HTMLElement>) => {
     setIsMuted(!isMuted);
-    muteCallback(!isMuted)
+    muteCallback(!isMuted);
   };
-
-  // play / pause audio on space bar press
-  useEffect(() => {
-    const onSpacebarPress = (event: KeyboardEvent) => {
-      if (event.code === "Space") {
-        setIsPlaying(!isPlaying);
-        isPlaying ? mediaControls.pause() : mediaControls.play();
-      }
-    };
-    window.addEventListener("keydown", onSpacebarPress);
-
-    return () => {
-      window.removeEventListener("keydown", onSpacebarPress);
-    };
-  }, [isPlaying, mediaControls.currentTrack.audio]);
 
   return (
     <div
@@ -150,7 +144,7 @@ export default function MediaPlayer({ mediaControls, muteCallback }: Props) {
       </div>
     </div>
   );
-}
+};
 
 // helpers
 
@@ -162,8 +156,4 @@ const secondsToString = (seconds: number): string => {
   return `${min}:${sec < 10 ? "0" + sec : sec}`;
 };
 
-// returns the off set of the track duration
-// used in the track bar to position the little cirlce
-const getPercentageTrackDone = (current: number, duration: number): string => {
-  return `calc(-6px + ${Math.round((current / duration) * 100)}%)`;
-};
+export default MediaPlayer;

@@ -1,84 +1,74 @@
 import React, { useState, useEffect } from "react";
-import "../styles/actionbar.css";
-import Scenes from "./Scenes";
-import VolumeSlider from "./VolumeSlider";
-import MediaControls from "../util/MediaControls";
 import Icon from "./Icon";
+import VolumeSlider from "./VolumeSlider";
+import "../styles/actionbar.css";
+import MediaControls from "../util/MediaControls";
+import Scenes from "./Scenes";
 import MoodMenu from "./MoodMenu";
 
 type Props = {
   mediaControls: MediaControls;
-  changeSceneCallback: (scene: string) => void;
+  ambienceVolume: number;
+  rainVolume: number;
+  thunderVolume: number;
+  trafficVolume: number;
+  musicVolume: number;
+  mood: string;
+  scene: string;
   isMuted: boolean;
-  isMixerOpen: boolean;
-  setIsMixerOpen: (isMixerOpen: boolean) => void;
-  isScenesOpen: boolean;
-  setIsScenesOpen: (isScenesOpen: boolean) => void;
   isMenuOpen: boolean;
-  setIsMenuOpen: (isMenuOpen: boolean) => void;
+  isMixerOpen: boolean;
+  isScenesOpen: boolean;
   isMoodMenuOpen: boolean;
+  setIsMenuOpen: (isMenuOpen: boolean) => void;
+  setIsMixerOpen: (isMixerOpen: boolean) => void;
+  setIsScenesOpen: (isScenesOpen: boolean) => void;
   setIsMoodMenuOpen: (isMoodMenuOpen: boolean) => void;
+  setAmbienceVolume: (ambienceVolume: number) => void;
+  setRainVolume: (rainVolume: number) => void;
+  setThunderVolume: (thunderVolume: number) => void;
+  setTrafficVolume: (trafficVolume: number) => void;
+  setMusicVolume: (musicVolume: number) => void;
+  setScene: (scene: string) => void;
+  setMood: (mood: string) => void;
+  changeSceneCallback: (scene: string) => void;
 };
 
-export default function ActionsBar({
+const ActionBar = ({
   mediaControls,
-  changeSceneCallback,
+  ambienceVolume,
+  rainVolume,
+  thunderVolume,
+  trafficVolume,
+  musicVolume,
+  mood,
+  scene,
   isMuted,
-  isMixerOpen,
-  isScenesOpen,
   isMenuOpen,
-  isMoodMenuOpen,
-  setIsMixerOpen,
-  setIsScenesOpen,
   setIsMenuOpen,
+  isMixerOpen,
+  setIsMixerOpen,
+  isScenesOpen,
+  setIsScenesOpen,
+  isMoodMenuOpen,
   setIsMoodMenuOpen,
-}: Props) {
+  setAmbienceVolume,
+  setRainVolume,
+  setThunderVolume,
+  setTrafficVolume,
+  setMusicVolume,
+  setScene,
+  setMood,
+  changeSceneCallback,
+}: Props) => {
   // state toggles
-  const [isLightMode, setIsLightMode] = useState(true);
+  const [isLightModeToggle, setIsLightModeToggle] = useState(true);
   const [isMixerHover, setIsMixerHover] = useState(false);
   const [isScenesHover, setIsScenesHover] = useState(false);
   const [isMoodMenuHover, setIsMoodMenuHover] = useState(false);
   const [isVolumesMuted, setIsVolumesMuted] = useState(isMuted);
 
-  // load volume statet values from local storage
-  const [ambienceVolume, setAmbienceVolume] = useState(
-    localStorage.getItem("forestVolume") !== null
-      ? Number(localStorage.getItem("forestVolume"))
-      : 0
-  );
-  const [rainVolume, setRainVolume] = useState(
-    localStorage.getItem("rainyVolume") !== null
-      ? Number(localStorage.getItem("rainyVolume"))
-      : 0
-  );
-  const [thunderVolume, setThunderVolume] = useState(
-    localStorage.getItem("boltVolume") !== null
-      ? Number(localStorage.getItem("boltVolume"))
-      : 0
-  );
-  const [trafficVolume, setTrafficVolume] = useState(
-    localStorage.getItem("trainVolume") !== null
-      ? Number(localStorage.getItem("trainVolume"))
-      : 0
-  );
-  const [musicVolume, setMusicVolume] = useState(
-    localStorage.getItem("music_noteVolume") !== null
-      ? Number(localStorage.getItem("music_noteVolume"))
-      : 80
-  );
-  const [mood, setMood] = useState(
-    localStorage.getItem("mood") !== null
-      ? localStorage.getItem("mood")!
-      : "shuffle"
-  );
-
-  // load selected scene
-  const [scene, setScene] = useState(
-    localStorage.getItem("scene") !== null
-      ? localStorage.getItem("scene")!
-      : "room.jpg"
-  );
-
+  //? useEffects
   // close Action bar on resize < 500 vh
   useEffect(() => {
     function handleResize() {
@@ -89,21 +79,9 @@ export default function ActionsBar({
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [isMenuOpen]);
+  }, [isMenuOpen, setIsMenuOpen]);
 
-  //todo- figure out how to mute the volume sliders audio
-  useEffect(() => {
-    console.log("first")
-    const muteAllVolumes = (mute: boolean) => {
-      setAmbienceVolume(mute ? 0 : ambienceVolume);
-      setRainVolume(mute ? 0 : rainVolume);
-      setThunderVolume(mute ? 0 : thunderVolume);
-      setTrafficVolume(mute ? 0 : trafficVolume);
-      setMusicVolume(mute ? 0 : musicVolume);
-      setIsVolumesMuted(mute);
-    };
-  }, [isMuted]);
-
+  //? handle CLICKs
   // open menu
   function hamburgerClick(event: React.MouseEvent<HTMLElement>) {
     if (window.innerHeight < 320) return;
@@ -115,7 +93,7 @@ export default function ActionsBar({
   }
 
   const handleDarkLightModeToggle = (event: React.MouseEvent<HTMLElement>) => {
-    setIsLightMode(!isLightMode);
+    setIsLightModeToggle(!isLightModeToggle);
   };
 
   const handleScenesClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -138,7 +116,7 @@ export default function ActionsBar({
     setIsMoodMenuOpen(false);
   };
 
-  // volume slider values
+  //? volume SLIDER values
   const handleAmbienceChange = (number: number) => {
     setAmbienceVolume(number);
   };
@@ -155,7 +133,7 @@ export default function ActionsBar({
     setMusicVolume(number);
   };
 
-  // show slider when hovering over icon
+  //? HOVER: show slider when hovering over icon
   const handleMixerMouseEnter = () => {
     setIsMixerHover(true);
   };
@@ -227,10 +205,10 @@ export default function ActionsBar({
           <i
             onClick={handleDarkLightModeToggle}
             className={`material-symbols-outlined ${
-              isLightMode ? "light-mode" : "dark-mode"
+              isLightModeToggle ? "light-mode" : "dark-mode"
             }`}
           >
-            {isLightMode ? "dark_mode" : "light_mode"}
+            {isLightModeToggle ? "dark_mode" : "light_mode"}
           </i>
 
           <Icon
@@ -249,6 +227,7 @@ export default function ActionsBar({
             value={ambienceVolume}
             onChange={handleAmbienceChange}
             tooltipText="Ambience"
+            isMuted={isMuted}
           ></VolumeSlider>
 
           <VolumeSlider
@@ -257,6 +236,7 @@ export default function ActionsBar({
             value={rainVolume}
             onChange={handleRainChange}
             tooltipText="Rain"
+            isMuted={isMuted}
           ></VolumeSlider>
 
           <VolumeSlider
@@ -265,6 +245,7 @@ export default function ActionsBar({
             value={thunderVolume}
             onChange={handleThunderChange}
             tooltipText="Thunder"
+            isMuted={isMuted}
           ></VolumeSlider>
 
           <VolumeSlider
@@ -273,6 +254,7 @@ export default function ActionsBar({
             value={trafficVolume}
             onChange={handleTrafficChange}
             tooltipText="Traffic"
+            isMuted={isMuted}
           ></VolumeSlider>
 
           <VolumeSlider
@@ -282,6 +264,7 @@ export default function ActionsBar({
             onChange={handleMusicVolumeChange}
             mediaControls={mediaControls}
             tooltipText="Music"
+            isMuted={isMuted}
           ></VolumeSlider>
         </div>
       </div>
@@ -297,4 +280,6 @@ export default function ActionsBar({
       ></MoodMenu>
     </div>
   );
-}
+};
+
+export default ActionBar;

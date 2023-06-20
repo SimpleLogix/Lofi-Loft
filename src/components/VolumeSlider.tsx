@@ -8,6 +8,7 @@ type SliderProps = {
   isMixerOpen: boolean;
   mediaControls?: MediaControls;
   tooltipText: string;
+  isMuted: boolean;
 };
 
 // Slider with an icon right before it
@@ -19,6 +20,7 @@ const VolumeSlider = ({
   isMixerOpen,
   mediaControls,
   tooltipText,
+  isMuted,
 }: SliderProps) => {
   const [isHover, setIsHover] = useState(false);
   const [isActive, setIsActive] = useState(false);
@@ -26,10 +28,8 @@ const VolumeSlider = ({
   const [oldVal, setOldVal] = useState(value);
   let timer: NodeJS.Timeout;
 
-
   // Create a new audio instance when the component mounts
   useEffect(() => {
-
     if (mediaControls) {
       // only music control has ref
       audioRef.current = mediaControls!.currentTrack.audio;
@@ -45,6 +45,19 @@ const VolumeSlider = ({
       audioRef.current = mediaControls!.currentTrack.audio;
     }
   }, [mediaControls?.currentTrack, mediaControls]);
+
+  // mute when isMuted updates
+  useEffect(() => {
+    if (isMuted) {
+      setOldVal(0);
+      audioRef.current!.volume = 0;
+    }
+    else {
+      setOldVal(value);
+      audioRef.current!.volume = value / 100;
+    }
+    console.log(isMuted);
+  }, [isMuted, oldVal]);
 
   // show slider when hovering over icon
   const handleMouseEnter = () => {
@@ -105,7 +118,9 @@ const VolumeSlider = ({
         {icon}
       </i>
       <input
-        className={`${isMixerOpen || isHover ? "fadeIn frosty slider" : "hidden"}`}
+        className={`${
+          isMixerOpen || isHover ? "fadeIn frosty slider" : "hidden"
+        }`}
         type="range"
         min={0}
         max={100}
