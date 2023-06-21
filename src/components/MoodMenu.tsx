@@ -1,6 +1,8 @@
 import React from "react";
+import MediaControls from "../util/MediaControls";
 
 type Props = {
+  mediaControls: MediaControls;
   isMoodMenuOpen: boolean;
   setMoodCallback: (mood: string) => void;
   selectedMood: string;
@@ -11,7 +13,12 @@ const MOODS = ["Shuffle", "Piano", "Nightlife", "Pokemon"];
 const pokeballImg = require("../assets/pokeball.png");
 const selectedPokeballImg = require("../assets/pokeball-selected.png");
 
-const MoodMenu = ({ isMoodMenuOpen, setMoodCallback, selectedMood }: Props) => {
+const MoodMenu = ({
+  isMoodMenuOpen,
+  setMoodCallback,
+  selectedMood,
+  mediaControls,
+}: Props) => {
   return (
     <div className={`${isMoodMenuOpen ? "frosty mood-container" : "hidden"}`}>
       {MOODS.map((mood) => {
@@ -40,7 +47,7 @@ const MoodMenu = ({ isMoodMenuOpen, setMoodCallback, selectedMood }: Props) => {
                 {mood.toLowerCase()}
               </i>
             )}
-            <div>{mood}</div>
+            <div>{mood === "Nightlife" ? "Jazz" : mood}</div>
           </div>
         );
       })}

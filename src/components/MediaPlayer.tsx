@@ -4,19 +4,20 @@ import "../styles/mediaplayer.css";
 
 type Props = {
   mediaControls: MediaControls;
+  isPlaying: boolean;
   musicVolume: number;
   isMuted: boolean;
   setIsMuted: (isMuted: boolean) => void;
-  muteCallback: (isMuted: boolean) => void;
+  setIsPlaying: (isPlaying: boolean) => void;
 };
 
 const MediaPlayer = ({
   mediaControls,
+  isPlaying,
   isMuted,
   setIsMuted,
-  muteCallback,
+  setIsPlaying,
 }: Props) => {
-  const [isPlaying, setIsPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(mediaControls.currentTrack);
   const [duration, setDuration] = useState(0); // displayed track duration
   const [currentTime, setCurrentTime] = useState(0); // displayed current time
@@ -91,7 +92,6 @@ const MediaPlayer = ({
 
   const handleMuteClick = (event: React.MouseEvent<HTMLElement>) => {
     setIsMuted(!isMuted);
-    muteCallback(!isMuted);
   };
 
   return (

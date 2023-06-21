@@ -6,7 +6,7 @@ type SliderProps = {
   value: number;
   onChange: (number: number) => void;
   isMixerOpen: boolean;
-  mediaControls?: MediaControls;
+  mediaControls?: MediaControls | null;
   tooltipText: string;
   isMuted: boolean;
 };
@@ -28,6 +28,7 @@ const VolumeSlider = ({
   const [oldVal, setOldVal] = useState(value);
   let timer: NodeJS.Timeout;
 
+  //? useEffects
   // Create a new audio instance when the component mounts
   useEffect(() => {
     if (mediaControls) {
@@ -56,9 +57,9 @@ const VolumeSlider = ({
       setOldVal(value);
       audioRef.current!.volume = value / 100;
     }
-    console.log(isMuted);
   }, [isMuted, oldVal]);
 
+  //? state handles
   // show slider when hovering over icon
   const handleMouseEnter = () => {
     clearTimeout(timer);

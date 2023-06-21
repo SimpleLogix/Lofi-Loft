@@ -31,7 +31,7 @@ type Props = {
   setMusicVolume: (musicVolume: number) => void;
   setScene: (scene: string) => void;
   setMood: (mood: string) => void;
-  changeSceneCallback: (scene: string) => void;
+  setIsPlaying: (isPlaying: boolean) => void;
 };
 
 const ActionBar = ({
@@ -59,7 +59,7 @@ const ActionBar = ({
   setMusicVolume,
   setScene,
   setMood,
-  changeSceneCallback,
+  setIsPlaying,
 }: Props) => {
   // state toggles
   const [isLightModeToggle, setIsLightModeToggle] = useState(true);
@@ -157,14 +157,15 @@ const ActionBar = ({
   const handleChangeScene = (scene: string) => {
     setScene(scene);
     localStorage.setItem("scene", scene);
-    changeSceneCallback(scene); // call back to main app to change background
   };
 
   // change mood option
   const handleMoodChange = (mood: string) => {
     setMood(mood);
     localStorage.setItem("mood", mood);
-    console.log(mood);
+    mediaControls.changePlaylist(mood);
+    mediaControls.play();
+    setIsPlaying(true);
   };
 
   return (
@@ -274,6 +275,7 @@ const ActionBar = ({
         changeSceneCallback={handleChangeScene}
       />
       <MoodMenu
+        mediaControls={mediaControls}
         isMoodMenuOpen={isMoodMenuOpen}
         setMoodCallback={handleMoodChange}
         selectedMood={mood}

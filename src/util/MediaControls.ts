@@ -1,17 +1,29 @@
 import { Track, loadTracks } from "./Track";
 
-
+type TrackCache = Map<string, Track[]>;
 
 class MediaControls {
 
+    playlistName: string = "Shuffle"
     playlist: Track[] = [];
     currentTrack: Track;
     currentTrackIdx = 0;
     volume = 50;
+    cachedTracks: TrackCache = new Map();
 
     constructor() {
         // load in audio
-        this.playlist = loadTracks();
+        this.currentTrack = {
+            name: "empty-minds",
+            audio: new Audio(`/audio/tracks/Piano/empty-minds.mp3`)
+        }
+    }
+
+    changePlaylist(playlistName: string) {
+        this.currentTrack.audio.pause();
+        this.playlistName = playlistName;
+        this.playlist = loadTracks(playlistName, this.cachedTracks);
+        this.currentTrackIdx = 0;
         this.currentTrack = this.playlist[0];
     }
 

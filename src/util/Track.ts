@@ -3,19 +3,49 @@ export interface Track {
     audio: HTMLAudioElement;
 }
 
-const TRACKS = [
-    "empty-minds", "coffee-chill-out"
-]
+type TrackList = {
+    [key: string]: string[];
+};
 
-// loads tracks from public into HTMLAudioElement
-export const loadTracks = () => {
-    let playlist: Track[] = [];
-    for (const trackName of TRACKS) {
-        playlist.push({
-            name: trackName,
-            audio: new Audio(`/audio/tracks/${trackName}.mp3`)
-        })
+const TRACKS: TrackList = {
+    Piano: ["empty-minds"],
+    Nightlife: ["coffee-chill-out"],
+    Pokemon: [],
+}
+
+// Cached list of tracks already loaded
+type TrackCache = Map<string, Track[]>;
+
+
+export const loadTracks = (playlistName: string, cachedTracks: TrackCache) => {
+    // Get from cache if available
+    if (cachedTracks.has(playlistName)) {
+        return cachedTracks.get(playlistName)!;
     }
+
+    let playlist: Track[] = [];
+    let trackNames: string[] = [];
+    // select playlist tracks
+    console.log("loading")
+    if (playlistName === "Shuffle" || playlistName === "Pokemon") {
+        //todo: shuffle
+        trackNames = TRACKS["Piano"];
+        playlistName = "Piano";
+    }
+    else {
+        trackNames = TRACKS[playlistName];
+    }
+    // load in audio from playlist
+    if (trackNames) {
+        for (const trackName of trackNames) {
+            playlist.push({
+                name: trackName,
+                audio: new Audio(`/audio/tracks/${playlistName}/${trackName}.mp3`)
+            })
+        }
+    }
+    // Save to cache
+    cachedTracks.set(playlistName, playlist);
 
     return playlist;
 }

@@ -3,27 +3,35 @@ import MediaPlayer from "./components/MediaPlayer";
 import ActionBar from "./components/ActionBar";
 import "./styles/app.css";
 import MediaControls from "./util/MediaControls";
+import { Track } from "./util/Track";
 
 const getItem = (key: string, def: any) => {
   return localStorage.getItem(key) !== null ? localStorage.getItem(key)! : def;
 };
 
-function App() {
-  const mediaControls = useRef(new MediaControls()).current;
+type TrackCache = Map<string, Track[]>;
 
-  // init states
+function App() {
+  const mediaControls = useRef<MediaControls | null>(null);
+  if (!mediaControls.current) {
+    mediaControls.current = new MediaControls();
+  }
+
+  //? init states
   const [ambienceVolume, setAmbienceVolume] = useState(0);
   const [rainVolume, setRainVolume] = useState(0);
   const [thunderVolume, setThunderVolume] = useState(0);
   const [trafficVolume, setTrafficVolume] = useState(0);
   const [musicVolume, setMusicVolume] = useState(80);
-  const [mood, setMood] = useState("");
-  const [scene, setScene] = useState("");
+  const [mood, setMood] = useState("Shuffle");
+  const [scene, setScene] = useState("room.jpg");
   const [isMuted, setIsMuted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMixerOpen, setIsMixerOpen] = useState(false);
   const [isScenesOpen, setIsScenesOpen] = useState(false);
   const [isMoodMenuOpen, setIsMoodMenuOpen] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const cachedTracks = useRef<TrackCache>(new Map());
 
   //? useEffects
   // fetch from local storage any existing values
@@ -33,8 +41,11 @@ function App() {
     setThunderVolume(Number(getItem("boltVolume", 0)));
     setTrafficVolume(Number(getItem("trainVolume", 0)));
     setMusicVolume(Number(getItem("music_noteVolume", 80)));
-    setMood(getItem("mood", "Shuffle"));
+    const storedMood = getItem("mood", "Shuffle");
+    setMood(storedMood);
     setScene(getItem("scene", "room.jpg"));
+
+    mediaControls.current?.changePlaylist(storedMood);
   }, []); // ensure data is only fetched locally once
 
   //? functions
@@ -49,6 +60,7 @@ function App() {
     }
   }
 
+  // closes menus on clicking outside
   const closeMenus = useCallback(() => {
     if (isMixerOpen || isScenesOpen || isMoodMenuOpen) {
       setIsMixerOpen(false);
@@ -59,11 +71,6 @@ function App() {
     }
   }, [isMixerOpen, isScenesOpen, isMoodMenuOpen]);
 
-  //? callbacks
-  const changeSceneCallback = (name: string) => {};
-
-  const muteCallback = (isMuted: boolean) => {};
-
   return (
     <div
       className="background"
@@ -73,7 +80,7 @@ function App() {
     >
       <div>
         <ActionBar
-          mediaControls={mediaControls}
+          mediaControls={mediaControls.current}
           ambienceVolume={ambienceVolume}
           rainVolume={rainVolume}
           thunderVolume={thunderVolume}
@@ -97,7 +104,7 @@ function App() {
           setMusicVolume={setMusicVolume}
           setScene={setScene}
           setMood={setMood}
-          changeSceneCallback={changeSceneCallback}
+          setIsPlaying={setIsPlaying}
         ></ActionBar>
         <i className="material-icons fullscreen-icon" onClick={fullscreenClick}>
           fullscreen
@@ -106,10 +113,11 @@ function App() {
 
       <MediaPlayer
         musicVolume={musicVolume}
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
         isMuted={isMuted}
-        mediaControls={mediaControls}
+        mediaControls={mediaControls.current}
         setIsMuted={setIsMuted}
-        muteCallback={muteCallback}
       ></MediaPlayer>
       <div className="logo">Lofi Loft</div>
     </div>
