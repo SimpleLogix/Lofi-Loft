@@ -50,14 +50,12 @@ const VolumeSlider = ({
   // mute when isMuted updates
   useEffect(() => {
     if (isMuted) {
-      setOldVal(0);
       audioRef.current!.volume = 0;
-    }
-    else {
+    } else {
       setOldVal(value);
       audioRef.current!.volume = value / 100;
     }
-  }, [isMuted, oldVal]);
+  }, [isMuted, oldVal, value]);
 
   //? state handles
   // show slider when hovering over icon

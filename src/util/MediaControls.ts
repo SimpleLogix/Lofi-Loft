@@ -12,10 +12,11 @@ class MediaControls {
     cachedTracks: TrackCache;
 
     constructor(cache: TrackCache) {
-        // load in audio
+        // load in sample audio
         this.currentTrack = {
             name: "empty-minds",
-            audio: new Audio(`/audio/tracks/Piano/empty-minds.mp3`)
+            source: "Pixabay",
+            audio: new Audio(`/audio/tracks/chill/empty-minds.mp3`)
         }
         this.cachedTracks = cache;
     }
@@ -68,7 +69,7 @@ class MediaControls {
         this.volume = volume;
     }
 
-
+    // returns a formatted string of the current time [min:sec]
     currentTime(): string {
         const time = Math.round(this.playlist[this.currentTrackIdx].audio.currentTime)
         const min = Math.round(time / 60);
@@ -76,14 +77,6 @@ class MediaControls {
 
         return `${min}:${sec < 10 ? '0' + sec : sec}`;
     }
-
-    // mute() {
-    //     this.playlist.forEach(track => track.audio.muted = true);
-    // }
-
-    // unmute() {
-    //     this.playlist.forEach(track => track.audio.muted = false);
-    // }
 
     private reset() {
         this.playlist[this.currentTrackIdx].audio.pause();

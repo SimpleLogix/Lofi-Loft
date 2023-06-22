@@ -6,12 +6,13 @@ import MediaControls from "../util/MediaControls";
 import Scenes, { IMAGES, getNightScene, getDayScene } from "./Scenes";
 import MoodMenu from "./MoodMenu";
 
+const getItem = (key: string, def: any) => {
+  return localStorage.getItem(key) !== null ? localStorage.getItem(key)! : def;
+};
+
+
 type Props = {
   mediaControls: MediaControls;
-  ambienceVolume: number;
-  rainVolume: number;
-  thunderVolume: number;
-  trafficVolume: number;
   musicVolume: number;
   mood: string;
   scene: string;
@@ -23,11 +24,7 @@ type Props = {
   setIsMenuOpen: (isMenuOpen: boolean) => void;
   setIsMixerOpen: (isMixerOpen: boolean) => void;
   setIsScenesOpen: (isScenesOpen: boolean) => void;
-  setIsMoodMenuOpen: (isMoodMenuOpen: boolean) => void;
-  setAmbienceVolume: (ambienceVolume: number) => void;
-  setRainVolume: (rainVolume: number) => void;
-  setThunderVolume: (thunderVolume: number) => void;
-  setTrafficVolume: (trafficVolume: number) => void;
+  setIsMoodMenuOpen: (isMoodMenuOpen: boolean) => void
   setMusicVolume: (musicVolume: number) => void;
   setScene: (scene: string) => void;
   setMood: (mood: string) => void;
@@ -36,10 +33,6 @@ type Props = {
 
 const ActionBar = ({
   mediaControls,
-  ambienceVolume,
-  rainVolume,
-  thunderVolume,
-  trafficVolume,
   musicVolume,
   mood,
   scene,
@@ -52,10 +45,6 @@ const ActionBar = ({
   setIsScenesOpen,
   isMoodMenuOpen,
   setIsMoodMenuOpen,
-  setAmbienceVolume,
-  setRainVolume,
-  setThunderVolume,
-  setTrafficVolume,
   setMusicVolume,
   setScene,
   setMood,
@@ -66,7 +55,10 @@ const ActionBar = ({
   const [isMixerHover, setIsMixerHover] = useState(false);
   const [isScenesHover, setIsScenesHover] = useState(false);
   const [isMoodMenuHover, setIsMoodMenuHover] = useState(false);
-  const [isVolumesMuted, setIsVolumesMuted] = useState(isMuted);
+  const [ambienceVolume, setAmbienceVolume] = useState(0);
+  const [rainVolume, setRainVolume] = useState(0);
+  const [thunderVolume, setThunderVolume] = useState(0);
+  const [trafficVolume, setTrafficVolume] = useState(0);
 
   //? useEffects
   // close Action bar on resize < 500 vh
@@ -80,6 +72,14 @@ const ActionBar = ({
       window.removeEventListener("resize", handleResize);
     };
   }, [isMenuOpen, setIsMenuOpen]);
+
+  // fetch local storage values
+  useEffect(() => {
+    setAmbienceVolume(Number(getItem("forestVolume", 0)));
+    setRainVolume(Number(getItem("rainyVolume", 0)));
+    setThunderVolume(Number(getItem("boltVolume", 0)));
+    setTrafficVolume(Number(getItem("trainVolume", 0)));
+  }, []);
 
   //? handle CLICKs
   // open menu

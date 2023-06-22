@@ -13,10 +13,7 @@ function App() {
   const mediaControls = useRef<MediaControls | null>(null);
 
   //? init states
-  const [ambienceVolume, setAmbienceVolume] = useState(0);
-  const [rainVolume, setRainVolume] = useState(0);
-  const [thunderVolume, setThunderVolume] = useState(0);
-  const [trafficVolume, setTrafficVolume] = useState(0);
+
   const [musicVolume, setMusicVolume] = useState(80);
   const [mood, setMood] = useState("Shuffle");
   const [scene, setScene] = useState("room.jpg");
@@ -36,10 +33,6 @@ function App() {
   //? useEffects
   // fetch from local storage any existing values
   useEffect(() => {
-    setAmbienceVolume(Number(getItem("forestVolume", 0)));
-    setRainVolume(Number(getItem("rainyVolume", 0)));
-    setThunderVolume(Number(getItem("boltVolume", 0)));
-    setTrafficVolume(Number(getItem("trainVolume", 0)));
     setMusicVolume(Number(getItem("music_noteVolume", 80)));
     const storedMood = getItem("mood", "Shuffle");
     setMood(storedMood);
@@ -81,10 +74,6 @@ function App() {
       <div>
         <ActionBar
           mediaControls={mediaControls.current}
-          ambienceVolume={ambienceVolume}
-          rainVolume={rainVolume}
-          thunderVolume={thunderVolume}
-          trafficVolume={trafficVolume}
           musicVolume={musicVolume}
           mood={mood}
           scene={scene}
@@ -97,10 +86,6 @@ function App() {
           setIsMixerOpen={setIsMixerOpen}
           setIsScenesOpen={setIsScenesOpen}
           setIsMoodMenuOpen={setIsMoodMenuOpen}
-          setAmbienceVolume={setAmbienceVolume}
-          setRainVolume={setRainVolume}
-          setThunderVolume={setThunderVolume}
-          setTrafficVolume={setTrafficVolume}
           setMusicVolume={setMusicVolume}
           setScene={setScene}
           setMood={setMood}
@@ -121,7 +106,9 @@ function App() {
       ></MediaPlayer>
       <div className="music-by center left column">
         <p>Music by</p>
-        <p className="music-source">Pixabay</p>
+        <p className="music-source">
+          {mediaControls.current.currentTrack.source}
+        </p>
       </div>
     </div>
   );
