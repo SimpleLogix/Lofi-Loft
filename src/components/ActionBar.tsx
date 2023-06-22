@@ -10,7 +10,6 @@ const getItem = (key: string, def: any) => {
   return localStorage.getItem(key) !== null ? localStorage.getItem(key)! : def;
 };
 
-
 type Props = {
   mediaControls: MediaControls;
   musicVolume: number;
@@ -21,14 +20,16 @@ type Props = {
   isMixerOpen: boolean;
   isScenesOpen: boolean;
   isMoodMenuOpen: boolean;
+  isDayOn: boolean;
   setIsMenuOpen: (isMenuOpen: boolean) => void;
   setIsMixerOpen: (isMixerOpen: boolean) => void;
   setIsScenesOpen: (isScenesOpen: boolean) => void;
-  setIsMoodMenuOpen: (isMoodMenuOpen: boolean) => void
+  setIsMoodMenuOpen: (isMoodMenuOpen: boolean) => void;
   setMusicVolume: (musicVolume: number) => void;
   setScene: (scene: string) => void;
   setMood: (mood: string) => void;
   setIsPlaying: (isPlaying: boolean) => void;
+  setIsDayOn: (isDayOn: boolean) => void;
 };
 
 const ActionBar = ({
@@ -42,6 +43,7 @@ const ActionBar = ({
   isMixerOpen,
   setIsMixerOpen,
   isScenesOpen,
+  isDayOn,
   setIsScenesOpen,
   isMoodMenuOpen,
   setIsMoodMenuOpen,
@@ -49,9 +51,9 @@ const ActionBar = ({
   setScene,
   setMood,
   setIsPlaying,
+  setIsDayOn,
 }: Props) => {
   // state toggles
-  const [isLightModeToggle, setIsLightModeToggle] = useState(true);
   const [isMixerHover, setIsMixerHover] = useState(false);
   const [isScenesHover, setIsScenesHover] = useState(false);
   const [isMoodMenuHover, setIsMoodMenuHover] = useState(false);
@@ -94,16 +96,17 @@ const ActionBar = ({
 
   // change light/dark mode
   const handleDarkLightModeToggle = (event: React.MouseEvent<HTMLElement>) => {
-    if (isLightModeToggle) {
+    if (isDayOn) {
       const nightScene = getNightScene(scene);
-      console.log(nightScene);
+      if (scene === nightScene) return;
       setScene(nightScene);
     } else {
       const dayScene = getDayScene(scene);
+      if (scene === dayScene) return;
       setScene(dayScene);
     }
-
-    setIsLightModeToggle(!isLightModeToggle);
+    localStorage.setItem("isDayOn", (!isDayOn).toString());
+    setIsDayOn(!isDayOn);
   };
 
   const handleScenesClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -165,7 +168,7 @@ const ActionBar = ({
 
   // change scene on click
   const handleChangeScene = (scene: string) => {
-    setIsLightModeToggle(true);
+    setIsDayOn(true);
     setScene(scene);
     localStorage.setItem("scene", scene);
   };
@@ -217,10 +220,10 @@ const ActionBar = ({
           <i
             onClick={handleDarkLightModeToggle}
             className={`material-symbols-outlined ${
-              isLightModeToggle ? "light-mode" : "dark-mode"
+              isDayOn ? "light-mode" : "dark-mode"
             }`}
           >
-            {isLightModeToggle ? "dark_mode" : "light_mode"}
+            {isDayOn ? "dark_mode" : "light_mode"}
           </i>
 
           <Icon

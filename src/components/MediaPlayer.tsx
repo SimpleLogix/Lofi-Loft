@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MediaControls from "../util/MediaControls";
 import "../styles/mediaplayer.css";
+import AudioVisualizer from "./AudioVisualizer";
 
 type Props = {
   mediaControls: MediaControls;
@@ -95,51 +96,55 @@ const MediaPlayer = ({
   };
 
   return (
-    <div
-      className="center column mp-container frosty bar"
-      onDoubleClick={(e) => e.stopPropagation()}
-      onClick={(e) => e.stopPropagation()}
-    >
-      <div className="track-bar">
-        <input
-          type="range"
-          id="track-slider"
-          value={mediaControls.currentTrack.audio.currentTime}
-          min={0}
-          max={mediaControls.currentTrack.audio.duration || 0}
-          onChange={handleTrackPositionUpdate}
-        />
-        <div className="track-time">
-          <div>{secondsToString(currentTime)}</div>
-          <div>
-            {secondsToString(mediaControls.currentTrack.audio.duration)}
+    <div className="center column mp-parent">
+      <AudioVisualizer isPlaying={isPlaying}></AudioVisualizer>
+
+      <div
+        className="center column mp-container frosty bar"
+        onDoubleClick={(e) => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="track-bar">
+          <input
+            type="range"
+            id="track-slider"
+            value={mediaControls.currentTrack.audio.currentTime}
+            min={0}
+            max={mediaControls.currentTrack.audio.duration || 0}
+            onChange={handleTrackPositionUpdate}
+          />
+          <div className="track-time">
+            <div>{secondsToString(currentTime)}</div>
+            <div>
+              {secondsToString(mediaControls.currentTrack.audio.duration)}
+            </div>
           </div>
-        </div>
-        <div className="track-metadata">{currentTrack.name}</div>
-      </div>
-
-      <div className="center controls">
-        <div>
-          <i onClick={handleRewindClick} className="material-icons">
-            fast_rewind
-          </i>
+          <div className="track-metadata">{currentTrack.name}</div>
         </div>
 
-        {/* Play/Pause */}
-        <i
-          onClick={handlePausePlayClick}
-          className="material-symbols-outlined play-pause"
-        >
-          {isPlaying ? "pause_circle" : "play_circle"}
-        </i>
-        <div className="center">
-          <i onClick={handleForwardClick} className="material-icons">
-            fast_forward
+        <div className="center controls">
+          <div>
+            <i onClick={handleRewindClick} className="material-icons">
+              fast_rewind
+            </i>
+          </div>
+
+          {/* Play/Pause */}
+          <i
+            onClick={handlePausePlayClick}
+            className="material-symbols-outlined play-pause"
+          >
+            {isPlaying ? "pause_circle" : "play_circle"}
           </i>
-          <i onClick={handleMuteClick} className="material-icons">
-            {isMuted ? "volume_off" : "volume_up"}
-          </i>
-          <i></i>
+          <div className="center">
+            <i onClick={handleForwardClick} className="material-icons">
+              fast_forward
+            </i>
+            <i onClick={handleMuteClick} className="material-icons">
+              {isMuted ? "volume_off" : "volume_up"}
+            </i>
+            <i></i>
+          </div>
         </div>
       </div>
     </div>

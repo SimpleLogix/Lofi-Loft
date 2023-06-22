@@ -15,7 +15,7 @@ export type TrackCache = Map<string, Track[]>;
 const TRACKS: TrackList = {
     chill: ["empty-minds", "Cozy-Place", "i-choose-you", "in-the-room-when-the-rain-pours", "lofi-beat-chill", "lofi-chill", "lofi-girl-dreams", "lofi-study", "messy-melody", "rain", "rain-and-nostalgia", "romantic-dinner", "soft-beat", "soothing-sunset", "street-food", "summer-background", "sunset-vibes", "watr-fluid", "wish-you-were-here"],
     jazz: ["coffee-chill-out", "vintage", "trumpet", "chill-night", "coding-night"],
-    Pokemon: [],
+    pokemon: ["Azalea-Town", "Pokémon-Gym"],
 }
 //? helpers
 
@@ -33,6 +33,7 @@ const iconPlaylistName = (icon: string): string => {
         case "Nightlife":
             return "jazz"
         case "Pokemon":
+            return "pokemon"
         case "Piano":
         default:
             return "chill"
@@ -76,6 +77,7 @@ export const loadTracks = (playlistName: string, cachedTracks: TrackCache) => {
             })
         }
     }
+
     // Save to cache
     shuffleArray(playlist)
     cachedTracks.set(playlistName, playlist);

@@ -36,15 +36,15 @@ const Scenes = ({ isOpen, scene, changeSceneCallback }: Props) => {
       className={`${isOpen ? "scenes-container column frosty" : "hidden"} }`}
     >
       {IMAGES.map(({ day, night }) => (
-        <div>
+        <div  key={`${day}-parent`}>
           <img
-            key={day}
+            key={`${day}-img`}
             src={`/images/${day}`}
             alt=""
             className={`${scene === day ? "selected-scene" : "hidden"}`}
             onClick={() => changeSceneCallback(day)}
           />
-          <i className="material-symbols-outlined">
+          <i key={`${day}-icon`} className="material-symbols-outlined">
             {getNightScene(day) !== day
               ? "light_mode"
               : day.split(".")[1] === "gif"

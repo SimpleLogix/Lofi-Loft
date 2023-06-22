@@ -4,6 +4,7 @@ import ActionBar from "./components/ActionBar";
 import "./styles/app.css";
 import MediaControls from "./util/MediaControls";
 import { Track, TrackCache } from "./util/Track";
+import { getNightScene } from "./components/Scenes";
 
 const getItem = (key: string, def: any) => {
   return localStorage.getItem(key) !== null ? localStorage.getItem(key)! : def;
@@ -17,6 +18,7 @@ function App() {
   const [musicVolume, setMusicVolume] = useState(80);
   const [mood, setMood] = useState("Shuffle");
   const [scene, setScene] = useState("room.jpg");
+  const [isDayOn, setIsDayOn] = useState(true);
   const [isMuted, setIsMuted] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMixerOpen, setIsMixerOpen] = useState(false);
@@ -37,6 +39,12 @@ function App() {
     const storedMood = getItem("mood", "Shuffle");
     setMood(storedMood);
     setScene(getItem("scene", "room.jpg"));
+    const storedDay = getItem("isDayOn", "true");
+    setIsDayOn(storedDay === "true");
+
+    if (storedDay === "false") {
+      setScene(getNightScene(getItem("scene", "room.jpg")));
+    }
 
     mediaControls.current?.changePlaylist(storedMood);
   }, []); // ensure data is only fetched locally once
@@ -82,11 +90,13 @@ function App() {
           isMoodMenuOpen={isMoodMenuOpen}
           isScenesOpen={isScenesOpen}
           isMixerOpen={isMixerOpen}
+          isDayOn={isDayOn}
           setIsMenuOpen={setIsMenuOpen}
           setIsMixerOpen={setIsMixerOpen}
           setIsScenesOpen={setIsScenesOpen}
           setIsMoodMenuOpen={setIsMoodMenuOpen}
           setMusicVolume={setMusicVolume}
+          setIsDayOn={setIsDayOn}
           setScene={setScene}
           setMood={setMood}
           setIsPlaying={setIsPlaying}
