@@ -72,14 +72,26 @@ i {
     display: none;
 }
 
-.logo {
+.left{
+    align-items: flex-start;
+}
+
+.music-by {
     position: absolute;
-    bottom: 0;
-    margin: 24px;
+    bottom: 24px;
+    left: 24px;
     font-family: 'gotu', 'seoge Ui';
-    font-size: 64px;
-    font-style: italic;
+    font-size: 20px;
     user-select: none;
+}
+
+.music-by>p{
+    opacity: 0.82;
+    margin: 0;
+}
+
+.music-source{
+    font-size: 48px;
 }
 
 .tooltip {

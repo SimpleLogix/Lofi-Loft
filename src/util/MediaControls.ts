@@ -9,14 +9,15 @@ class MediaControls {
     currentTrack: Track;
     currentTrackIdx = 0;
     volume = 50;
-    cachedTracks: TrackCache = new Map();
+    cachedTracks: TrackCache;
 
-    constructor() {
+    constructor(cache: TrackCache) {
         // load in audio
         this.currentTrack = {
             name: "empty-minds",
             audio: new Audio(`/audio/tracks/Piano/empty-minds.mp3`)
         }
+        this.cachedTracks = cache;
     }
 
     changePlaylist(playlistName: string) {

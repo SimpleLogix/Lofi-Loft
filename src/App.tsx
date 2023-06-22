@@ -3,19 +3,14 @@ import MediaPlayer from "./components/MediaPlayer";
 import ActionBar from "./components/ActionBar";
 import "./styles/app.css";
 import MediaControls from "./util/MediaControls";
-import { Track } from "./util/Track";
+import { Track, TrackCache } from "./util/Track";
 
 const getItem = (key: string, def: any) => {
   return localStorage.getItem(key) !== null ? localStorage.getItem(key)! : def;
 };
 
-type TrackCache = Map<string, Track[]>;
-
 function App() {
   const mediaControls = useRef<MediaControls | null>(null);
-  if (!mediaControls.current) {
-    mediaControls.current = new MediaControls();
-  }
 
   //? init states
   const [ambienceVolume, setAmbienceVolume] = useState(0);
@@ -31,7 +26,12 @@ function App() {
   const [isScenesOpen, setIsScenesOpen] = useState(false);
   const [isMoodMenuOpen, setIsMoodMenuOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  const cachedTracks = useRef<TrackCache>(new Map());
+  const cachedTracks = useRef<TrackCache>(new Map()); // cache for tracks to avoid re-fetching
+
+  // initialize a new MediaControls instance if one doesn't exist
+  if (!mediaControls.current) {
+    mediaControls.current = new MediaControls(cachedTracks.current);
+  }
 
   //? useEffects
   // fetch from local storage any existing values
@@ -119,7 +119,10 @@ function App() {
         mediaControls={mediaControls.current}
         setIsMuted={setIsMuted}
       ></MediaPlayer>
-      <div className="logo">Lofi Loft</div>
+      <div className="music-by center left column">
+        <p>Music by</p>
+        <p className="music-source">Pixabay</p>
+      </div>
     </div>
   );
 }

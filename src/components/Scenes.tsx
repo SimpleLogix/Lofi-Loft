@@ -1,14 +1,28 @@
 import React from "react";
 
-const IMAGE_NAMES = [
-  "room.jpg",
-  "coffee.jpg",
-  "snow.jpg",
-  "synthwave.gif",
-  "cyberpunk.gif",
-  "japan.jpg",
-  "drive.gif",
+export interface IMG {
+  day: string;
+  night?: string;
+}
+
+export const IMAGES: IMG[] = [
+  { day: "synthwave.gif" },
+  { day: "japan.jpg", night: "japan-night.jpg" },
+  { day: "drive.gif" },
+  { day: "snow.jpg" },
+  { day: "room2.jpg" },
+  { day: "room3-day.jpg", night: "room3-night.jpg" },
 ];
+
+export const getNightScene = (scene: string): string => {
+  let imageObj = IMAGES.find((img) => img.day === scene)!;
+  return imageObj.night ? imageObj.night : scene;
+};
+
+export const getDayScene = (scene: string) => {
+  let imageObj = IMAGES.find((img) => img.night === scene)!;
+  return imageObj.day ? imageObj.day : scene;
+};
 
 type Props = {
   isOpen: boolean;
@@ -19,17 +33,15 @@ type Props = {
 const Scenes = ({ isOpen, scene, changeSceneCallback }: Props) => {
   return (
     <div
-      className={`${
-        isOpen ? "center column scenes-container frosty" : "hidden"
-      } }`}
+      className={`${isOpen ? "scenes-container column frosty" : "hidden"} }`}
     >
-      {IMAGE_NAMES.map((name) => (
+      {IMAGES.map(({ day, night }) => (
         <img
-          key={name}
-          src={`/images/${name}`}
+          key={day}
+          src={`/images/${day}`}
           alt=""
-          className={`${scene === name ? "selected-scene" : "hidden"}`}
-          onClick={() => changeSceneCallback(name)}
+          className={`${scene === day ? "selected-scene" : "hidden"}`}
+          onClick={() => changeSceneCallback(day)}
         />
       ))}
     </div>

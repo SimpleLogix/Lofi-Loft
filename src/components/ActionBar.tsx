@@ -3,7 +3,7 @@ import Icon from "./Icon";
 import VolumeSlider from "./VolumeSlider";
 import "../styles/actionbar.css";
 import MediaControls from "../util/MediaControls";
-import Scenes from "./Scenes";
+import Scenes, { IMAGES, getNightScene, getDayScene } from "./Scenes";
 import MoodMenu from "./MoodMenu";
 
 type Props = {
@@ -92,7 +92,17 @@ const ActionBar = ({
     setIsMenuOpen(!isMenuOpen);
   }
 
+  // change light/dark mode
   const handleDarkLightModeToggle = (event: React.MouseEvent<HTMLElement>) => {
+    if (isLightModeToggle) {
+      const nightScene = getNightScene(scene);
+      console.log(nightScene);
+      setScene(nightScene);
+    } else {
+      const dayScene = getDayScene(scene);
+      setScene(dayScene);
+    }
+
     setIsLightModeToggle(!isLightModeToggle);
   };
 
@@ -155,6 +165,7 @@ const ActionBar = ({
 
   // change scene on click
   const handleChangeScene = (scene: string) => {
+    setIsLightModeToggle(true);
     setScene(scene);
     localStorage.setItem("scene", scene);
   };

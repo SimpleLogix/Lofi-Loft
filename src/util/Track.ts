@@ -7,26 +7,21 @@ type TrackList = {
     [key: string]: string[];
 };
 
+// Cached list of tracks already loaded
+export type TrackCache = Map<string, Track[]>;
+
+// list of tracks in each category playlist
 const TRACKS: TrackList = {
     Piano: ["empty-minds"],
     Nightlife: ["coffee-chill-out"],
     Pokemon: [],
 }
 
-// Cached list of tracks already loaded
-type TrackCache = Map<string, Track[]>;
-
-
 export const loadTracks = (playlistName: string, cachedTracks: TrackCache) => {
-    // Get from cache if available
-    if (cachedTracks.has(playlistName)) {
-        return cachedTracks.get(playlistName)!;
-    }
 
     let playlist: Track[] = [];
     let trackNames: string[] = [];
     // select playlist tracks
-    console.log("loading")
     if (playlistName === "Shuffle" || playlistName === "Pokemon") {
         //todo: shuffle
         trackNames = TRACKS["Piano"];
@@ -35,6 +30,13 @@ export const loadTracks = (playlistName: string, cachedTracks: TrackCache) => {
     else {
         trackNames = TRACKS[playlistName];
     }
+
+    // Get from cache if available
+    if (cachedTracks.has(playlistName)) {
+        console.log("returning")
+        return cachedTracks.get(playlistName)!;
+    }
+
     // load in audio from playlist
     if (trackNames) {
         for (const trackName of trackNames) {
