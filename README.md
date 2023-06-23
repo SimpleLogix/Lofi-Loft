@@ -37,7 +37,7 @@ Stream _lofi music_ and add _ambience_ like rain, thunder, traffic, and more.
 <div align="center">
   
   <a href="">
-    <img src="lofiloft-screenshot.png" width="640">
+    <img src="lofiloft-screenshot.png" width="840">
   </a>
 
   <br/>
