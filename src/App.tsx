@@ -72,10 +72,29 @@ function App() {
     }
   }, [isMixerOpen, isScenesOpen, isMoodMenuOpen]);
 
+  // pause on spacebar press
+  useEffect(() => {
+    const onSpacebarPress = (event: KeyboardEvent) => {
+      if (event.code === "Space") {
+        setIsPlaying(!isPlaying);
+        isPlaying
+          ? mediaControls.current?.pause()
+          : mediaControls.current?.play();
+      }
+    };
+    window.addEventListener("keydown", onSpacebarPress);
+
+    return () => {
+      window.removeEventListener("keydown", onSpacebarPress);
+    };
+  }, [isPlaying, mediaControls]);
+
   return (
     <div
       className="background"
-      style={{ backgroundImage: `url(/images/${scene})` }}
+      style={{
+        backgroundImage: `url(${process.env.PUBLIC_URL}/images/${scene})`,
+      }}
       onClick={closeMenus}
       onDoubleClick={fullscreenClick}
     >
@@ -111,6 +130,7 @@ function App() {
         isPlaying={isPlaying}
         setIsPlaying={setIsPlaying}
         isMuted={isMuted}
+        mood={mood}
         mediaControls={mediaControls.current}
         setIsMuted={setIsMuted}
       ></MediaPlayer>

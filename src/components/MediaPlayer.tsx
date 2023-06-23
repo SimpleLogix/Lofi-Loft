@@ -8,6 +8,7 @@ type Props = {
   isPlaying: boolean;
   musicVolume: number;
   isMuted: boolean;
+  mood: string;
   setIsMuted: (isMuted: boolean) => void;
   setIsPlaying: (isPlaying: boolean) => void;
 };
@@ -16,6 +17,7 @@ const MediaPlayer = ({
   mediaControls,
   isPlaying,
   isMuted,
+  mood,
   setIsMuted,
   setIsPlaying,
 }: Props) => {
@@ -108,6 +110,7 @@ const MediaPlayer = ({
           <input
             type="range"
             id="track-slider"
+            className={`${mood === "Pokemon" ? "poke" : "default"}`}
             value={mediaControls.currentTrack.audio.currentTime}
             min={0}
             max={mediaControls.currentTrack.audio.duration || 0}

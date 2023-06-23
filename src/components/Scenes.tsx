@@ -6,12 +6,15 @@ export interface IMG {
 }
 
 export const IMAGES: IMG[] = [
+  { day: "room.jpg" },
   { day: "synthwave.gif" },
   { day: "japan.jpg", night: "japan-night.jpg" },
   { day: "drive.gif" },
   { day: "snow.jpg" },
   { day: "room2.jpg" },
   { day: "room3-day.jpg", night: "room3-night.jpg" },
+  { day: "leaf.gif" },
+  { day: "metro-green.jpg" },
 ];
 
 export const getNightScene = (scene: string): string => {
@@ -36,7 +39,7 @@ const Scenes = ({ isOpen, scene, changeSceneCallback }: Props) => {
       className={`${isOpen ? "scenes-container column frosty" : "hidden"} }`}
     >
       {IMAGES.map(({ day, night }) => (
-        <div  key={`${day}-parent`}>
+        <div key={`${day}-parent`}>
           <img
             key={`${day}-img`}
             src={`/images/${day}`}

@@ -15,7 +15,7 @@ export type TrackCache = Map<string, Track[]>;
 const TRACKS: TrackList = {
     chill: ["empty-minds", "Cozy-Place", "i-choose-you", "in-the-room-when-the-rain-pours", "lofi-beat-chill", "lofi-chill", "lofi-girl-dreams", "lofi-study", "messy-melody", "rain", "rain-and-nostalgia", "romantic-dinner", "soft-beat", "soothing-sunset", "street-food", "summer-background", "sunset-vibes", "watr-fluid", "wish-you-were-here"],
     jazz: ["coffee-chill-out", "vintage", "trumpet", "chill-night", "coding-night"],
-    pokemon: ["Azalea-Town", "Pokémon-Gym"],
+    pokemon: ["Anistar City", "Azalea Town", "Ecruteak City", "Ending Theme", "Hau'oli City", "Lavender Town", "National Park", "Pokemon Gym", "Pokemon League", "Relic Song", "Route 3", "Route 30", "Route 113", "Sacred Beasts", "Title Screen", "Trainer Battle"],
 }
 //? helpers
 
